@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Microsoft.AspNet.SignalR;
-using TicTacBro.Domain;
 
 namespace TicTacBro.Hubs
 {
@@ -19,11 +15,18 @@ namespace TicTacBro.Hubs
             Clients.Client(Context.ConnectionId).InitializeBoard(boardStates);
         }
 
-        // receive message that square was clicked
-        // send message to clients that square was clicked
+        public void NewGame()
+        {
+            if (!GameStateManager.GameInProgress())
+                GameStateManager.StartNewGame();
+
+            var boardStates = GameStateManager.GetBoardStates();
+            Clients.All.InitializeBoard(boardStates);
+        }
+
         public void YourTurnBro(Int32 squareIndex)
         {
-            GameStateManager.MakeMove(squareIndex);
+            var gameState = GameStateManager.MakeMove(squareIndex);
 
             var gameBoardStates = GameStateManager.GetBoardStates();
             Clients.All.UpdateBoard(squareIndex, gameBoardStates[squareIndex]);

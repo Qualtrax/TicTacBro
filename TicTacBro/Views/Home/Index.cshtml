@@ -36,11 +36,22 @@
             };
             
             ticTacBro.client.initializeBoard = function (boardStates) {
-                console.log(boardStates);
-                
+
+                [].forEach.call(document.getElementsByClassName('selected'), function (square) {
+                    square.classList.remove('selected');
+                });
+
+                [].forEach.call(document.getElementsByClassName('selected-o'), function (square) {
+                    square.classList.remove('selected-o');
+                });
+
+                [].forEach.call(document.getElementsByClassName('selected-x'), function (square) {
+                    square.classList.remove('selected-x');
+                });
+
                 boardStates.forEach(function (square, index) {
                     var element = document.getElementById(index);
-                    if (!element.classList.contains("selected") && square !== 0) {
+                    if (!element.classList.contains('selected') && square !== 0) {
                         element.classList.add('selected');
 
                         if (square == 1)
@@ -49,6 +60,17 @@
                             element.classList.add('selected-x');
                     }
                 });                
+            };
+
+            ticTacBro.client.updateGameStatus = function (state) {
+                if (state == 1)
+                    confirm('O Has Won the Game');
+                else if (state == 2)
+                    alert('X Has Won the Game');
+                else if (state == 3)
+                    alert('A Tie has occured');
+
+                ticTacBro.server.newGame();
             };
 
             $.connection.hub.start().done(function () {

@@ -7,9 +7,9 @@ namespace TicTacBro.Models
 {
     public enum GameStatus
     {
-        XWin,
+        Incomplete,
         OWin,
-        Tie,
-        Incomplete
+        XWin,
+        Tie
     }
 }
