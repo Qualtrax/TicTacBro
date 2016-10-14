@@ -26,16 +26,16 @@ namespace TicTacBro.Domain
             var winConditionsToCheck = winConditions.Where(c => c.Contains(indexSelected));
             var lastPlayedState = gameState.States[indexSelected];
 
-            foreach (var winCondition in winConditionsToCheck)
+            for (var i = winConditionsToCheck.Count() - 1; i >= 0; i--)
             {
-                if (PlayerWon(gameState, lastPlayedState, winCondition))
+                if (PlayerWon(gameState, lastPlayedState, winConditionsToCheck.ElementAt(i)))
                 {
                     gameState.Status = lastPlayedState == SquareStates.X ? GameStatus.XWin : GameStatus.OWin;
                     return;
                 }
 
-                if (WinConditionShouldBeRemoved(gameState, winCondition))
-                    winConditions.Remove(winCondition);
+                if (WinConditionShouldBeRemoved(gameState, winConditionsToCheck.ElementAt(i)))
+                    winConditions.Remove(winConditionsToCheck.ElementAt(i));
             }
 
             if (winConditions.Any())

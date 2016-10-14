@@ -31,12 +31,20 @@ namespace TicTacBro
 
         public static Boolean GameInProgress()
         {
+            if (gameState == null)
+                return false;
+
             return gameState.Status == GameStatus.Incomplete;
         }
 
         public static GameStatus GetGameStateStatus()
         {
             return gameState.Status;
+        }
+
+        public static SquareStates[] GetBoardStates()
+        {
+            return gameState.States;
         }
     }
 }

@@ -14,11 +14,9 @@ namespace TicTacBro.Hubs
         {
             if (!GameStateManager.GameInProgress())
                 GameStateManager.StartNewGame();
-        }
-
-        public void CheckMe(string name, string message)
-        {
-
+            
+            var boardStates = GameStateManager.GetBoardStates();
+            Clients.Client(Context.ConnectionId).InitializeBoard(boardStates);
         }
 
         // receive message that square was clicked
@@ -26,7 +24,9 @@ namespace TicTacBro.Hubs
         public void YourTurnBro(Int32 squareIndex)
         {
             GameStateManager.MakeMove(squareIndex);
-            Clients.All.UpdateBoard(squareIndex);
+
+            var gameBoardStates = GameStateManager.GetBoardStates();
+            Clients.All.UpdateBoard(squareIndex, gameBoardStates[squareIndex]);
 
             if (!GameStateManager.GameInProgress())
                 Clients.All.UpdateGameStatus(GameStateManager.GetGameStateStatus());
