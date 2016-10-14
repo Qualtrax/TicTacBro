@@ -11,7 +11,6 @@ namespace TicTacBro
     {
         private static Boolean isXsTurn;
         private static GameState gameState;
-        private static GameValidator gameValidator = new GameValidator();
 
         public static void StartNewGame()
         {
@@ -24,10 +23,20 @@ namespace TicTacBro
             var playerState = isXsTurn ? SquareStates.X : SquareStates.O;
 
             gameState.SetSquareStateAt(index, playerState);
-            gameValidator.Validate(gameState, index);
+            GameValidator.Validate(gameState, index);
             isXsTurn = !isXsTurn;
 
             return gameState;
+        }
+
+        public static Boolean GameInProgress()
+        {
+            return gameState.Status == GameStatus.Incomplete;
+        }
+
+        public static GameStatus GetGameStateStatus()
+        {
+            return gameState.Status;
         }
     }
 }

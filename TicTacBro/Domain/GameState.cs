@@ -10,7 +10,6 @@ namespace TicTacBro.Domain
     {
         public SquareStates[] States { get; }
         public GameStatus Status { get; set; }
-        private Int32[] DirtyBits;
 
         public GameState()
         {
@@ -28,8 +27,7 @@ namespace TicTacBro.Domain
             else
                 throw new InvalidOperationException("State has already been set bro...");
         }
-
-
+        
         private void ValidateIndex(Int32 index)
         {
             if (index > 8 || index < 0)
