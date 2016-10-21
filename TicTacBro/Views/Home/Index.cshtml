@@ -60,18 +60,7 @@
             };
             
             ticTacBro.client.initializeBoard = function (boardStates) {
-
-                [].forEach.call(document.getElementsByClassName('selected'), function (square) {
-                    square.classList.remove('selected');
-                });
-
-                [].forEach.call(document.getElementsByClassName('selected-o'), function (square) {
-                    square.classList.remove('selected-o');
-                });
-
-                [].forEach.call(document.getElementsByClassName('selected-x'), function (square) {
-                    square.classList.remove('selected-x');
-                });
+                removeClassFromElementList(['selected', 'selected-o', 'selected-x']);
 
                 boardStates.forEach(function (square, index) {
                     var element = document.getElementById(index);
@@ -125,6 +114,15 @@
                     if (!square.classList.contains('selected'))
                         square.classList.add('turn-o');
                 });
+            }
+
+            function removeClassFromElementList(classes) {
+                for (var i = 0; i < classes.length; i++) {
+                    var elementsWithClass = document.getElementsByClassName(classes[i]);
+
+                    for (var j = 0; j < elementsWithClass.length; j++)
+                        elementsWithClass[j].classList.remove(classes[i]);
+                }
             }
 
             $.connection.hub.start().done(function () {
