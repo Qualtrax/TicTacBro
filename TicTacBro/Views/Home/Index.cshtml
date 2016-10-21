@@ -1,5 +1,6 @@
 ﻿
 <div class="tic-tac-toe">
+    <h1 class="logo">TIC-TAC-BRO</h1>
     <div class="row">
         <div id="0" class="square">
             <span class="value"></span>
@@ -45,12 +46,17 @@
             var ticTacBro = $.connection.ticTacHub;
             ticTacBro.client.updateBoard = function (index, state) {
                 var square = document.getElementById(index);
+                var turnX = state == 1;
                 square.classList.add('selected');
 
-                if (state == 1)
+                if (state == 1) {
                     square.classList.add('selected-o');
-                else if (state == 2)
+                    addHoverClassesForX();
+                }
+                else if (state == 2) {
                     square.classList.add('selected-x');
+                    addHoverClassesForO();
+                }
             };
             
             ticTacBro.client.initializeBoard = function (boardStates) {
@@ -77,7 +83,17 @@
                         else if (square == 2)
                             element.classList.add('selected-x');
                     }
-                });                
+                });
+
+                var selected = boardStates.filter(function (square) {
+                    return square != 0;
+                });
+
+                var turnO = selected.length % 2 == 1;
+                if (turnO)
+                    addHoverClassesForO();
+                else
+                    addHoverClassesForX();
             };
 
             ticTacBro.client.updateGameStatus = function (state) {
@@ -90,6 +106,26 @@
 
                 ticTacBro.server.newGame();
             };
+
+            function addHoverClassesForX() {
+                var squares = document.getElementsByClassName('square');
+
+                [].forEach.call(document.getElementsByClassName('square'), function (square) {
+                    square.classList.remove('turn-o');
+                    if (!square.classList.contains('selected'))
+                        square.classList.add('turn-x');
+                });
+            }
+
+            function addHoverClassesForO() {
+                var squares = document.getElementsByClassName('square');
+
+                [].forEach.call(document.getElementsByClassName('square'), function (square) {
+                    square.classList.remove('turn-x');
+                    if (!square.classList.contains('selected'))
+                        square.classList.add('turn-o');
+                });
+            }
 
             $.connection.hub.start().done(function () {
                 ticTacBro.server.startGame();
