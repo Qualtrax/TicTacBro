@@ -61,6 +61,11 @@ h5 {
     border-radius: 14px;
     cursor: pointer;
     color: #fff;
+    display: flex;
+    font-size: 3em;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
     height: 90px;
     margin: 5px;
     width: 90px;
@@ -77,8 +82,24 @@ h5 {
     background-color: #3d4250;
 }
 
+.square.selected-o > span:after {
+    content: 'O';
+}
+
+.square.turn-o:hover span:after {
+    content: 'O';
+}
+
 .square.selected-x {
     background-color: darkmagenta;
+}
+
+.square.selected-x > span:after {
+    content: 'X';
+}
+
+.square.turn-x:hover span:after {
+    content: 'X';
 }
 
 .row {
