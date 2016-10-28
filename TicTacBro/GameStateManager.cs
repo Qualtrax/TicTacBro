@@ -15,6 +15,7 @@ namespace TicTacBro
         public static void StartNewGame()
         {
             isXsTurn = true;
+            GameValidator.ResetValidator();
             gameState = new GameState();
         }
 

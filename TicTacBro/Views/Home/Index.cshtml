@@ -45,6 +45,10 @@
 
             var ticTacBro = $.connection.ticTacHub;
             ticTacBro.client.updateBoard = function (index, state) {
+                addClickedClass(index, state);
+            };
+
+            function addClickedClass(index, state) {
                 var square = document.getElementById(index);
                 var turnX = state == 1;
                 square.classList.add('selected');
@@ -57,10 +61,9 @@
                     square.classList.add('selected-x');
                     addHoverClassesForO();
                 }
-            };
+            }
             
             ticTacBro.client.initializeBoard = function (boardStates) {
-                removeClassFromElementList(['selected', 'selected-o', 'selected-x']);
 
                 boardStates.forEach(function (square, index) {
                     var element = document.getElementById(index);
@@ -87,12 +90,13 @@
 
             ticTacBro.client.updateGameStatus = function (state) {
                 if (state == 1)
-                    confirm('O Has Won the Game');
+                    alert('O Has Won the Game');
                 else if (state == 2)
                     alert('X Has Won the Game');
                 else if (state == 3)
                     alert('A Tie has occured');
 
+                removeClassFromElementList();
                 ticTacBro.server.newGame();
             };
 
@@ -116,13 +120,11 @@
                 });
             }
 
-            function removeClassFromElementList(classes) {
-                for (var i = 0; i < classes.length; i++) {
-                    var elementsWithClass = document.getElementsByClassName(classes[i]);
+            function removeClassFromElementList() {
+                var elementsWithClass = document.getElementsByClassName("square");
 
-                    for (var j = 0; j < elementsWithClass.length; j++)
-                        elementsWithClass[j].classList.remove(classes[i]);
-                }
+                for (var j = 0; j < elementsWithClass.length; j++)
+                    elementsWithClass[j].className = "square";
             }
 
             $.connection.hub.start().done(function () {
@@ -130,10 +132,6 @@
 
                 [].forEach.call(document.getElementsByClassName('square'), function (square) {
                     square.addEventListener("click", function () {
-                        //var classList = this.classList;
-                        //if (!classList.contains('selected'))
-                        //    this.classList.add('selected');
-
                         ticTacBro.server.yourTurnBro(this.id);
                     });
                 });

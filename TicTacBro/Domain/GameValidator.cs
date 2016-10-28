@@ -16,10 +16,15 @@ namespace TicTacBro.Domain
         private static Int32[] ColumnThree = { 2, 5, 8 };
         private static Int32[] DiagonalTopLeft = { 0, 4, 8 };
         private static Int32[] DiagonalTopRight = { 2, 4, 6 };
-        private static IList<Int32[]> winConditions = new List<Int32[]>()
+        private static IList<Int32[]> winConditions;
+
+        public static void ResetValidator()
         {
-            RowOne, RowTwo, RowThree, ColumnOne, ColumnTwo, ColumnThree, DiagonalTopLeft, DiagonalTopRight
-        };
+            winConditions = new List<Int32[]>()
+            {
+                RowOne, RowTwo, RowThree, ColumnOne, ColumnTwo, ColumnThree, DiagonalTopLeft, DiagonalTopRight
+            };
+        }
 
         public static void Validate(GameState gameState, Int32 indexSelected)
         {
