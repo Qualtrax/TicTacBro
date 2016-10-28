@@ -27,12 +27,10 @@ namespace TicTacBro.Hubs
         public void YourTurnBro(Int32 squareIndex)
         {
             var gameState = GameStateManager.MakeMove(squareIndex);
-
             var gameBoardStates = GameStateManager.GetBoardStates();
-            Clients.All.UpdateBoard(squareIndex, gameBoardStates[squareIndex]);
+            var gameStatus = GameStateManager.GetGameStateStatus();
 
-            if (!GameStateManager.GameInProgress())
-                Clients.All.UpdateGameStatus(GameStateManager.GetGameStateStatus());
+            Clients.All.UpdateGameStatus(squareIndex, gameBoardStates[squareIndex], gameStatus);
         }
     }
 }

@@ -44,11 +44,7 @@
         $(function () {
 
             var ticTacBro = $.connection.ticTacHub;
-            ticTacBro.client.updateBoard = function (index, state) {
-                addClickedClass(index, state);
-            };
-
-            function addClickedClass(index, state) {
+            ticTacBro.client.updateGameStatus = function (index, state, gameStatus) {
                 var square = document.getElementById(index);
                 var turnX = state == 1;
                 square.classList.add('selected');
@@ -61,7 +57,9 @@
                     square.classList.add('selected-x');
                     addHoverClassesForO();
                 }
-            }
+
+                checkForWin(gameStatus);
+            };
             
             ticTacBro.client.initializeBoard = function (boardStates) {
 
@@ -88,7 +86,10 @@
                     addHoverClassesForX();
             };
 
-            ticTacBro.client.updateGameStatus = function (state) {
+            function checkForWin(state) {
+                if (state == 0)
+                    return;
+
                 if (state == 1)
                     alert('O Has Won the Game');
                 else if (state == 2)
