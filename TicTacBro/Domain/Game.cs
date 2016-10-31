@@ -6,12 +6,12 @@ using TicTacBro.Models;
 
 namespace TicTacBro.Domain
 {
-    public class GameState
+    public class Game
     {
         public SquareStates[] States { get; }
         public GameStatus Status { get; set; }
 
-        public GameState()
+        public Game()
         {
             Status = GameStatus.Incomplete;
             States = new SquareStates[9];

@@ -202,9 +202,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Domain\GameState.cs" />
+    <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\GameValidator.cs" />
-    <Compile Include="Domain\WinCondition.cs" />
     <Compile Include="GameStateManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

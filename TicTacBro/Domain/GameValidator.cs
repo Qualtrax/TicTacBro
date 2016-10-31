@@ -26,7 +26,7 @@ namespace TicTacBro.Domain
             };
         }
 
-        public static void Validate(GameState gameState, Int32 indexSelected)
+        public static void Validate(Game gameState, Int32 indexSelected)
         {
             var winConditionsToCheck = winConditions.Where(c => c.Contains(indexSelected));
             var lastPlayedState = gameState.States[indexSelected];
@@ -49,12 +49,12 @@ namespace TicTacBro.Domain
                 gameState.Status = GameStatus.Tie;
         }
 
-        private static Boolean PlayerWon(GameState gameState, SquareStates lastPlayedState, Int32[] winCondition)
+        private static Boolean PlayerWon(Game gameState, SquareStates lastPlayedState, Int32[] winCondition)
         {
             return (winCondition.Count(c => gameState.States[c] == lastPlayedState)) == 3;
         }
 
-        private static Boolean WinConditionShouldBeRemoved(GameState gameState, Int32[] winCondition)
+        private static Boolean WinConditionShouldBeRemoved(Game gameState, Int32[] winCondition)
         {
             return !winCondition.Any(c => gameState.States[c] == SquareStates.Empty);
         }
