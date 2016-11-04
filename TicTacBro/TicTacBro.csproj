@@ -202,14 +202,21 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\GameValidator.cs" />
-    <Compile Include="GameStateManager.cs" />
+    <Compile Include="Domain\Game.cs" />
+    <Compile Include="Exceptions\NedryException.cs" />
+    <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\TicTacHub.cs" />
+    <Compile Include="Models\MoveEvent.cs" />
     <Compile Include="Models\GameStatus.cs" />
+    <Compile Include="Models\Board.cs" />
+    <Compile Include="Models\IEvent.cs" />
+    <Compile Include="Models\IPlayer.cs" />
+    <Compile Include="Models\PlayerO.cs" />
+    <Compile Include="Models\PlayerX.cs" />
     <Compile Include="Models\SquareStates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

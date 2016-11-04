@@ -1,6 +1,6 @@
 ﻿namespace TicTacBro.Models
 {
-    public enum SquareStates {
+    public enum SquareState {
         Empty, O, X
     };
 }
