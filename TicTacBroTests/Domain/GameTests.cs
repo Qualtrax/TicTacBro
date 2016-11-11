@@ -100,7 +100,7 @@ namespace TicTacBroTests.Domain
         }
 
         [TestMethod]
-        public void EventIsLoggedWhenGameEndsInATie_WereStillDumb()
+        public void EventIsLoggedWhenGameEndsInAnEarlyTie()
         {
             var playerX = new PlayerX();
             var playerO = new PlayerO();
@@ -112,11 +112,10 @@ namespace TicTacBroTests.Domain
             game.MakeMove(playerX, 5);
             game.MakeMove(playerO, 4);
             game.MakeMove(playerX, 6);
-            game.MakeMove(playerO, 7);
 
             var gameEndedInATieEvent = game.Events.Last();
             Assert.IsInstanceOfType(gameEndedInATieEvent, typeof(GameEndedInATieEvent));
-            Assert.AreEqual(9, game.Events.Count());
+            Assert.AreEqual(8, game.Events.Count());
         }
     }
 }

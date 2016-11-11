@@ -10,7 +10,7 @@ namespace TicTacBro.Domain
     {
         private IPlayer lastPlayer;
         private IPlayer[] playerStates;
-        private IList<IWinCondition> winConditions;
+        private List<IWinCondition> winConditions;
 
         public IEnumerable<IPlayer> States
         {
@@ -84,13 +84,27 @@ namespace TicTacBro.Domain
 
                     return;
                 }
-
-                if (!winCondition.CanBeMet(playerStates))
-                    winConditions.Remove(winCondition);
             }
 
-            if (!winConditions.Any())
+            winConditions.RemoveAll(w => !w.CanBeMet(playerStates));
+
+            if (NoWinConditionsRemain() || (OnlyOneWinConditionRemains() && OnlyTwoEmptySpacesRemain()))
                 LogEvent(new GameEndedInATieEvent());
+        }
+
+        private Boolean OnlyTwoEmptySpacesRemain()
+        {
+            return playerStates.Where(s => s.Type() == new PlayerNone().Type()).Count() == 2;
+        }
+
+        private Boolean OnlyOneWinConditionRemains()
+        {
+            return winConditions.Count() == 1;
+        }
+
+        private Boolean NoWinConditionsRemain()
+        {
+            return !winConditions.Any();
         }
     }
 }
