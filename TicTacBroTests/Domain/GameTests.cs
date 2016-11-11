@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Qualtrax.Tests.Common;
 using TicTacBro.Domain;
+using TicTacBro.Domain.Events;
 using TicTacBro.Exceptions;
 using TicTacBro.Models;
 
@@ -15,7 +16,7 @@ namespace TicTacBroTests.Domain
 
         public GameTests()
         {
-            game = new Game(new GameValidator());
+            game = new Game();
         }
 
         [TestMethod]
@@ -65,6 +66,41 @@ namespace TicTacBroTests.Domain
             Assert.AreEqual(2, firstEvent.Position);
             Assert.AreEqual(playerX.Type(), firstEvent.Player.Type());
             Assert.AreEqual(playerX.Type(), lastEvent.Player.Type());
+        }
+
+        [TestMethod]
+        public void EventIsLoggedWhenPlayerOWinsTheGame()
+        {
+            var playerX = new PlayerX();
+            var playerO = new PlayerO();
+
+            game.MakeMove(playerX, 0);
+            game.MakeMove(playerO, 3);
+            game.MakeMove(playerX, 1);
+            game.MakeMove(playerO, 4);
+            game.MakeMove(playerX, 8);
+            game.MakeMove(playerO, 5);
+
+            var wonEvent = game.Events.Last();
+            Assert.IsInstanceOfType(wonEvent, typeof(PlayerOWonEvent));
+            Assert.AreEqual(7, game.Events.Count());
+        }
+
+        [TestMethod]
+        public void EventIsLoggedWhenPlayerXWinsTheGame()
+        {
+            var playerX = new PlayerX();
+            var playerO = new PlayerO();
+
+            game.MakeMove(playerX, 0);
+            game.MakeMove(playerO, 3);
+            game.MakeMove(playerX, 1);
+            game.MakeMove(playerO, 4);
+            game.MakeMove(playerX, 2);
+
+            var wonEvent = game.Events.Last();
+            Assert.IsInstanceOfType(wonEvent, typeof(PlayerXWonEvent));
+            Assert.AreEqual(6, game.Events.Count());
         }
     }
 }

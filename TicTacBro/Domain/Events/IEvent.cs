@@ -1,4 +1,4 @@
-﻿namespace TicTacBro.Models
+﻿namespace TicTacBro.Domain.Events
 {
     public interface IEvent
     { }

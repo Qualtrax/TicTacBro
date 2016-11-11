@@ -1,6 +1,7 @@
 ﻿using System;
+using TicTacBro.Models;
 
-namespace TicTacBro.Models
+namespace TicTacBro.Domain.Events
 {
     public class MoveEvent : IEvent
     {

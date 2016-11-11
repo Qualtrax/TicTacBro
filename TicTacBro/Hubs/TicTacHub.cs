@@ -12,13 +12,13 @@ namespace TicTacBro.Hubs
 
         public TicTacHub()
         {
-            game = new Game(new GameValidator());
+            game = new Game();
         }
 
         public void StartGame()
         {
             if (!game.GameInProgress())
-                game = new Game(new GameValidator());
+                game = new Game();
             
             var boardStates = game.States;
             Clients.Client(Context.ConnectionId).InitializeBoard(boardStates);
@@ -27,7 +27,7 @@ namespace TicTacBro.Hubs
         public void NewGame()
         {
             if (!game.GameInProgress())
-                game = new Game(new GameValidator());
+                game = new Game();
 
             var boardStates = game.States;
             Clients.All.InitializeBoard(boardStates);
