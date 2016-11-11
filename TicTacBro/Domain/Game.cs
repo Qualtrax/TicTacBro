@@ -36,7 +36,10 @@ namespace TicTacBro.Domain
         public void MakeMove(IPlayer player, Int32 position)
         {
             if (lastPlayer.Type() == player.Type())
+            {
+                Events.Add(new MovedOutOfTurnEvent { Player = player });
                 return;
+            }
 
             lastPlayer = player;
             Events.Add(new MoveEvent { Player = player, Position = position });

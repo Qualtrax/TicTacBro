@@ -53,13 +53,18 @@ namespace TicTacBroTests.Domain
         }
 
         [TestMethod]
-        public void NedryExceptionIsThrownWhenMovingOutOfTurn()
+        public void ErrorEventIsLoggedWhenPlayerMovesOutOfTurn()
         {
             var playerX = new PlayerX();
             game.MakeMove(playerX, 2);
             game.MakeMove(playerX, 3);
 
-            Assert.AreEqual(1, game.Events.Count());
+            var firstEvent = game.Events.First() as MoveEvent;
+            var lastEvent = game.Events.Last() as MovedOutOfTurnEvent;
+            Assert.AreEqual(2, game.Events.Count());
+            Assert.AreEqual(2, firstEvent.Position);
+            Assert.AreEqual(playerX.Type(), firstEvent.Player.Type());
+            Assert.AreEqual(playerX.Type(), lastEvent.Player.Type());
         }
     }
 }
