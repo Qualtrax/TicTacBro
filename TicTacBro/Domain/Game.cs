@@ -10,7 +10,6 @@ namespace TicTacBro.Domain
     {
         private IPlayer lastPlayer;
         private IPlayer[] playerStates;
-        private GameStatus status;
         public List<IEvent> Events { get; private set; }
 
         private static readonly Int32[] RowOne = { 0, 1, 2 };
@@ -35,7 +34,6 @@ namespace TicTacBro.Domain
         {
             Events = new List<IEvent>();
             lastPlayer = new PlayerNone();
-            status = GameStatus.Incomplete;
             playerStates = Enumerable.Select(new IPlayer[9], p => new PlayerNone()).ToArray<IPlayer>();
             winConditions = new List<Int32[]>()
             {
@@ -55,14 +53,7 @@ namespace TicTacBro.Domain
             SetSquareStateAt(player, position);
             Events.Add(new MoveEvent { Player = player, Position = position });
 
-            Validate(position);
-
-            if (status == GameStatus.OWin)
-                Events.Add(new PlayerOWonEvent());
-            else if (status == GameStatus.XWin)
-                Events.Add(new PlayerXWonEvent());
-            else if (status == GameStatus.Tie)
-                Events.Add(new GameEndedInATieEvent());
+            CheckForChangeInGameStatus(position);
         }
 
         private void SetSquareStateAt(IPlayer value, Int32 index)
@@ -81,7 +72,7 @@ namespace TicTacBro.Domain
                 throw new ArgumentOutOfRangeException("Invalid Square State index bro...");
         }
 
-        private void Validate(Int32 indexSelected)
+        private void CheckForChangeInGameStatus(Int32 indexSelected)
         {
             var winConditionsToCheck = winConditions.Where(c => c.Contains(indexSelected));
             var lastPlayedState = playerStates[indexSelected];
@@ -90,7 +81,11 @@ namespace TicTacBro.Domain
             {
                 if (PlayerWon(lastPlayedState, winConditionsToCheck.ElementAt(i)))
                 {
-                    status = lastPlayedState.Type() == new PlayerX().Type() ? GameStatus.XWin : GameStatus.OWin;
+                    if (lastPlayedState.Type() == new PlayerX().Type())
+                        Events.Add(new PlayerXWonEvent());
+                    else
+                        Events.Add(new PlayerOWonEvent());
+
                     return;
                 }
 
@@ -98,10 +93,8 @@ namespace TicTacBro.Domain
                     winConditions.Remove(winConditionsToCheck.ElementAt(i));
             }
 
-            if (winConditions.Any())
-                status = GameStatus.Incomplete;
-            else
-                status = GameStatus.Tie;
+            if (!winConditions.Any())
+                Events.Add(new GameEndedInATieEvent());
         }
 
         private Boolean PlayerWon(IPlayer lastPlayedState, Int32[] winCondition)

@@ -214,7 +214,6 @@
     <Compile Include="Hubs\TicTacHub.cs" />
     <Compile Include="Domain\Events\MovedOutOfTurnEvent.cs" />
     <Compile Include="Domain\Events\MoveEvent.cs" />
-    <Compile Include="Models\GameStatus.cs" />
     <Compile Include="Domain\Events\IEvent.cs" />
     <Compile Include="Domain\IPlayer.cs" />
     <Compile Include="Domain\PlayerO.cs" />
