@@ -1,5 +1,5 @@
 ﻿using System;
-using TicTacBro.Models;
+using TicTacBro.Domain;
 
 namespace TicTacBro.Factories
 {

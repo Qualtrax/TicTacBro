@@ -1,5 +1,4 @@
-﻿using TicTacBro.Models;
-
+﻿
 namespace TicTacBro.Domain.Events
 {
     public class MovedOutOfTurnEvent : IEvent

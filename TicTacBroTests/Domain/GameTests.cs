@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Qualtrax.Tests.Common;
 using TicTacBro.Domain;
 using TicTacBro.Domain.Events;
-using TicTacBro.Exceptions;
-using TicTacBro.Models;
 
 namespace TicTacBroTests.Domain
 {
@@ -104,7 +100,7 @@ namespace TicTacBroTests.Domain
         }
 
         [TestMethod]
-        public void EventIsLoggedWhenGameEndsInATie()
+        public void EventIsLoggedWhenGameEndsInATie_WereStillDumb()
         {
             var playerX = new PlayerX();
             var playerO = new PlayerO();
@@ -116,12 +112,11 @@ namespace TicTacBroTests.Domain
             game.MakeMove(playerX, 5);
             game.MakeMove(playerO, 4);
             game.MakeMove(playerX, 6);
-            game.MakeMove(playerO, 8);
-            game.MakeMove(playerX, 7);
+            game.MakeMove(playerO, 7);
 
             var gameEndedInATieEvent = game.Events.Last();
             Assert.IsInstanceOfType(gameEndedInATieEvent, typeof(GameEndedInATieEvent));
-            Assert.AreEqual(10, game.Events.Count());
+            Assert.AreEqual(9, game.Events.Count());
         }
     }
 }

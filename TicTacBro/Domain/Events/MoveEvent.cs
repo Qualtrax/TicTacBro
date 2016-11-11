@@ -1,5 +1,4 @@
 ﻿using System;
-using TicTacBro.Models;
 
 namespace TicTacBro.Domain.Events
 {
