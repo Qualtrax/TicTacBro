@@ -77,9 +77,9 @@ namespace TicTacBro.Domain
             var winConditionsToCheck = winConditions.Where(c => c.Contains(indexSelected));
             var lastPlayedState = playerStates[indexSelected];
 
-            for (var i = winConditionsToCheck.Count() - 1; i >= 0; i--)
+            foreach (var winCondition in winConditionsToCheck.Reverse())
             {
-                if (PlayerWon(lastPlayedState, winConditionsToCheck.ElementAt(i)))
+                if (PlayerWon(lastPlayedState, winCondition))
                 {
                     if (lastPlayedState.Type() == new PlayerX().Type())
                         Events.Add(new PlayerXWonEvent());
@@ -89,17 +89,17 @@ namespace TicTacBro.Domain
                     return;
                 }
 
-                if (WinConditionShouldBeRemoved(winConditionsToCheck.ElementAt(i)))
-                    winConditions.Remove(winConditionsToCheck.ElementAt(i));
+                if (WinConditionShouldBeRemoved(winCondition))
+                    winConditions.Remove(winCondition);
             }
 
             if (!winConditions.Any())
                 Events.Add(new GameEndedInATieEvent());
         }
 
-        private Boolean PlayerWon(IPlayer lastPlayedState, Int32[] winCondition)
+        private Boolean PlayerWon(IPlayer lastPlayedState, Int32[] specificWinCondition)
         {
-            return (winCondition.Count(c => playerStates[c].Type() == lastPlayedState.Type())) == 3;
+            return (specificWinCondition.Count(c => playerStates[c].Type() == lastPlayedState.Type())) == 3;
         }
 
         private Boolean WinConditionShouldBeRemoved(Int32[] specificWinCondition)
