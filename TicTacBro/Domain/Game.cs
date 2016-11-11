@@ -7,7 +7,7 @@ namespace TicTacBro.Domain
 {
     public class Game
     {
-        private Boolean isXsTurn;
+        private IPlayer lastPlayer;
         private GameValidator validator;
         private Board board;
         private SquareState[] states;
@@ -22,16 +22,12 @@ namespace TicTacBro.Domain
             }
         }
 
-        public Game()
-        {
-            Events = new List<IEvent>();
-        }
-
         public Game(GameValidator validator)
         {
+            Events = new List<IEvent>();
             this.validator = validator;
             this.board = new Board();
-            isXsTurn = true;
+            lastPlayer = new PlayerNone();
             Status = GameStatus.Incomplete;
             states = new SquareState[9];
             states = states.Select(c => { c = SquareState.Empty; return c; }).ToArray();
@@ -39,6 +35,10 @@ namespace TicTacBro.Domain
 
         public void MakeMove(IPlayer player, Int32 position)
         {
+            if (lastPlayer.Type() == player.Type())
+                return;
+
+            lastPlayer = player;
             Events.Add(new MoveEvent { Player = player, Position = position });
             //var playerState = isXsTurn ? SquareState.X : SquareState.O;
 

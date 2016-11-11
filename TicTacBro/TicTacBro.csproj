@@ -216,6 +216,7 @@
     <Compile Include="Models\IEvent.cs" />
     <Compile Include="Models\IPlayer.cs" />
     <Compile Include="Models\PlayerO.cs" />
+    <Compile Include="Models\PlayerNone.cs" />
     <Compile Include="Models\PlayerX.cs" />
     <Compile Include="Models\SquareStates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

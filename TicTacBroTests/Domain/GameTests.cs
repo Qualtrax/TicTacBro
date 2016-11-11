@@ -15,7 +15,7 @@ namespace TicTacBroTests.Domain
 
         public GameTests()
         {
-            game = new Game();
+            game = new Game(new GameValidator());
         }
 
         [TestMethod]
@@ -57,8 +57,8 @@ namespace TicTacBroTests.Domain
         {
             var playerX = new PlayerX();
             game.MakeMove(playerX, 2);
+            game.MakeMove(playerX, 3);
 
-            ExceptionAssert.Throws<NedryException>(() => game.MakeMove(playerX, 3));
             Assert.AreEqual(1, game.Events.Count());
         }
     }
