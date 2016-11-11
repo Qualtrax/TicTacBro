@@ -202,6 +202,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Domain\Events\GameEndedInATieEvent.cs" />
     <Compile Include="Domain\Events\PlayerXWonEvent.cs" />
     <Compile Include="Domain\Events\PlayerOWonEvent.cs" />
     <Compile Include="Domain\Game.cs" />

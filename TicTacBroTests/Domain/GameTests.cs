@@ -102,5 +102,26 @@ namespace TicTacBroTests.Domain
             Assert.IsInstanceOfType(wonEvent, typeof(PlayerXWonEvent));
             Assert.AreEqual(6, game.Events.Count());
         }
+
+        [TestMethod]
+        public void EventIsLoggedWhenGameEndsInATie()
+        {
+            var playerX = new PlayerX();
+            var playerO = new PlayerO();
+
+            game.MakeMove(playerX, 0);
+            game.MakeMove(playerO, 2);
+            game.MakeMove(playerX, 1);
+            game.MakeMove(playerO, 3);
+            game.MakeMove(playerX, 5);
+            game.MakeMove(playerO, 4);
+            game.MakeMove(playerX, 6);
+            game.MakeMove(playerO, 8);
+            game.MakeMove(playerX, 7);
+
+            var gameEndedInATieEvent = game.Events.Last();
+            Assert.IsInstanceOfType(gameEndedInATieEvent, typeof(GameEndedInATieEvent));
+            Assert.AreEqual(10, game.Events.Count());
+        }
     }
 }

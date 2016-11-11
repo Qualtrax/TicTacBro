@@ -3,31 +3,26 @@ using Microsoft.AspNet.SignalR;
 using TicTacBro.Domain;
 using System.Linq;
 using TicTacBro.Factories;
+using TicTacBro.Domain.Events;
 
 namespace TicTacBro.Hubs
 {
     public class TicTacHub : Hub
     {
         private Game game;
-
-        public TicTacHub()
-        {
-            game = new Game();
-        }
-
+        
         public void StartGame()
         {
-            if (!game.GameInProgress())
+            if (game == null)
                 game = new Game();
             
             var boardStates = game.States;
             Clients.Client(Context.ConnectionId).InitializeBoard(boardStates);
         }
 
-        public void NewGame()
+        public void StartGameForAllPlayers()
         {
-            if (!game.GameInProgress())
-                game = new Game();
+            game = new Game();
 
             var boardStates = game.States;
             Clients.All.InitializeBoard(boardStates);
@@ -38,7 +33,12 @@ namespace TicTacBro.Hubs
             var player = PlayerFactory.Build(playerIdentificationToken);
             game.MakeMove(player, position);
             var gameBoardStates = game.States;
-            var gameStatus = game.Status;
+            var gameStatus = 0;
+
+            if (game.Events.Any(e => e is PlayerOWonEvent))
+                gameStatus = 1;
+            else if (game.Events.Any(e => e is PlayerXWonEvent))
+                gameStatus = 2;
 
             Clients.All.UpdateGameStatus(position, gameBoardStates.ElementAt(position), gameStatus);
         }

@@ -10,7 +10,7 @@ namespace TicTacBro.Domain
     {
         private IPlayer lastPlayer;
         private IPlayer[] playerStates;
-        public GameStatus Status { get; private set; }
+        private GameStatus status;
         public List<IEvent> Events { get; private set; }
 
         private static readonly Int32[] RowOne = { 0, 1, 2 };
@@ -35,7 +35,7 @@ namespace TicTacBro.Domain
         {
             Events = new List<IEvent>();
             lastPlayer = new PlayerNone();
-            Status = GameStatus.Incomplete;
+            status = GameStatus.Incomplete;
             playerStates = Enumerable.Select(new IPlayer[9], p => new PlayerNone()).ToArray<IPlayer>();
             winConditions = new List<Int32[]>()
             {
@@ -57,10 +57,12 @@ namespace TicTacBro.Domain
 
             Validate(position);
 
-            if (Status == GameStatus.OWin)
+            if (status == GameStatus.OWin)
                 Events.Add(new PlayerOWonEvent());
-            else if (Status == GameStatus.XWin)
+            else if (status == GameStatus.XWin)
                 Events.Add(new PlayerXWonEvent());
+            else if (status == GameStatus.Tie)
+                Events.Add(new GameEndedInATieEvent());
         }
 
         private void SetSquareStateAt(IPlayer value, Int32 index)
@@ -88,7 +90,7 @@ namespace TicTacBro.Domain
             {
                 if (PlayerWon(lastPlayedState, winConditionsToCheck.ElementAt(i)))
                 {
-                    Status = lastPlayedState.Type() == new PlayerX().Type() ? GameStatus.XWin : GameStatus.OWin;
+                    status = lastPlayedState.Type() == new PlayerX().Type() ? GameStatus.XWin : GameStatus.OWin;
                     return;
                 }
 
@@ -97,9 +99,9 @@ namespace TicTacBro.Domain
             }
 
             if (winConditions.Any())
-                Status = GameStatus.Incomplete;
+                status = GameStatus.Incomplete;
             else
-                Status = GameStatus.Tie;
+                status = GameStatus.Tie;
         }
 
         private Boolean PlayerWon(IPlayer lastPlayedState, Int32[] winCondition)
@@ -110,12 +112,6 @@ namespace TicTacBro.Domain
         private Boolean WinConditionShouldBeRemoved(Int32[] specificWinCondition)
         {
             return !specificWinCondition.Any(c => playerStates[c].Type() == new PlayerNone().Type());
-        }
-
-        public Boolean GameInProgress()
-        {
-            return Status == GameStatus.Incomplete;
-        }
-        
+        }        
     }
 }
