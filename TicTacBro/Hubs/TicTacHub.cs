@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNet.SignalR;
 using TicTacBro.Domain;
 using TicTacBro.Domain.Events;
+using TicTacBro.Factories;
 
 namespace TicTacBro.Hubs
 {
@@ -12,20 +13,24 @@ namespace TicTacBro.Hubs
         private static PlayerTracker playerTracker;
         private static IPlayer nextPlayer;
 
-        public void StartGame()
+        public void Join()
         {
             if (game == null)
                 InitializeGame();
 
-            var boardStateViews = game.States.Select(s => s.Identification());
-            Clients.Client(Context.ConnectionId).InitializeBoard(boardStateViews);
+            var emptyGame = new Char[9];
+            var moveEvents = game.Events.Where(e => e is MoveEvent).Cast<MoveEvent>();
+
+            foreach (var moveEvent in moveEvents)
+                emptyGame[moveEvent.Position] = moveEvent.Player.Identification();
+
+            Clients.Client(Context.ConnectionId).InitializeBoard(emptyGame);
         }
 
-        public void StartGameForAllPlayers()
+        public void Start()
         {
             InitializeGame();
-            var boardStateViews = game.States.Select(s => s.Identification());
-            Clients.All.InitializeBoard(boardStateViews);
+            Clients.All.InitializeBoard(new NewGameFactory().BuildEmptyGame());
         }
 
         public void YourTurnBro(Int32 position)
@@ -33,7 +38,7 @@ namespace TicTacBro.Hubs
             game.MakeMove(nextPlayer, position);
             nextPlayer = playerTracker.ChangePlayer();
 
-            var gameBoardStates = game.States;
+            var lastMove = game.Events.Last(e => e is MoveEvent) as MoveEvent;
             var gameStatus = 0;
 
             if (game.Events.Last() is PlayerOWonEvent)
@@ -43,7 +48,7 @@ namespace TicTacBro.Hubs
             else if (game.Events.Last() is GameEndedInATieEvent)
                 gameStatus = 3;
 
-            Clients.All.UpdateGameStatus(position, gameBoardStates.ElementAt(position).Identification(), gameStatus);
+            Clients.All.UpdateGameStatus(position, lastMove.Player.Identification(), gameStatus);
         }
 
         private void InitializeGame()

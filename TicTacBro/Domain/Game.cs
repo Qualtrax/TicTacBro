@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TicTacBro.Domain.Events;
 using TicTacBro.Domain.WinConditions;
+using TicTacBro.Factories;
 
 namespace TicTacBro.Domain
 {
@@ -12,18 +13,11 @@ namespace TicTacBro.Domain
         private IPlayer[] playerStates;
         private List<IWinCondition> winConditions;
 
-        public IEnumerable<IPlayer> States
-        {
-            get
-            {
-                return playerStates.ToList();
-            }
-        }
-
         public Game()
         {
             lastPlayer = new PlayerNone();
-            playerStates = Enumerable.Select(new IPlayer[9], p => new PlayerNone()).ToArray<IPlayer>();
+            var factory = new NewGameFactory();
+            playerStates = factory.BuildEmptyGame().ToArray();
             winConditions = new List<IWinCondition>()
             {
                 new RowOneWinCondition(),

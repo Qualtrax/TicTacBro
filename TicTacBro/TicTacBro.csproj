@@ -220,6 +220,7 @@
     <Compile Include="Domain\WinConditions\RowOneWinCondition.cs" />
     <Compile Include="Domain\WinConditions\WinCondition.cs" />
     <Compile Include="Exceptions\NedryException.cs" />
+    <Compile Include="Factories\NewGameFactory.cs" />
     <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

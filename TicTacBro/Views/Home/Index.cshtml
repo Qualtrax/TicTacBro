@@ -101,7 +101,7 @@
                     alert('A Tie has occured');
 
                 removeClassFromElementList();
-                ticTacBro.server.startGameForAllPlayers();
+                ticTacBro.server.start();
             };
 
             function addHoverClassesForX() {
@@ -132,7 +132,7 @@
             }
 
             $.connection.hub.start().done(function () {
-                ticTacBro.server.startGame();
+                ticTacBro.server.join();
 
                 [].forEach.call(document.getElementsByClassName('square'), function (square) {
                     square.addEventListener("click", function () {
