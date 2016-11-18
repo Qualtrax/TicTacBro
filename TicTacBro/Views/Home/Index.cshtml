@@ -44,20 +44,23 @@
         $(function () {
 
             var ticTacBro = $.connection.ticTacHub;
-            ticTacBro.client.updateGameStatus = function (index, state, gameStatus) {
+            var lastPlayerToMove;
+            
+
+            ticTacBro.client.updateGameStatus = function (index, lastPlayer, gameStatus) {
                 var square = document.getElementById(index);
-                var turnX = state == 1;
                 square.classList.add('selected');
 
-                if (state == 1) {
+                if (lastPlayer == 'O') {
                     square.classList.add('selected-o');
                     addHoverClassesForX();
                 }
-                else if (state == 2) {
+                else if (lastPlayer == 'X') {
                     square.classList.add('selected-x');
                     addHoverClassesForO();
                 }
 
+                lastPlayerToMove = lastPlayer;
                 checkForWin(gameStatus);
             };
             
@@ -65,18 +68,18 @@
 
                 boardStates.forEach(function (square, index) {
                     var element = document.getElementById(index);
-                    if (!element.classList.contains('selected') && square !== 0) {
+                    if (!element.classList.contains('selected') && square !== 'N') {
                         element.classList.add('selected');
 
-                        if (square == 1)
+                        if (square == 'O')
                             element.classList.add('selected-o');
-                        else if (square == 2)
+                        else if (square == 'X')
                             element.classList.add('selected-x');
                     }
                 });
 
                 var selected = boardStates.filter(function (square) {
-                    return square != 0;
+                    return square != 'N';
                 });
 
                 var turnO = selected.length % 2 == 1;

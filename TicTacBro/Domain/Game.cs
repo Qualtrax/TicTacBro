@@ -39,7 +39,7 @@ namespace TicTacBro.Domain
 
         public void MakeMove(IPlayer player, Int32 position)
         {
-            if (lastPlayer.Type() == player.Type())
+            if (lastPlayer.Identification() == player.Identification())
             {
                 LogEvent(new MovedOutOfTurnEvent { Player = player });
                 return;
@@ -56,7 +56,7 @@ namespace TicTacBro.Domain
         {
             ValidateIndexIsInRange(index);
 
-            if (playerStates[index].Type() == new PlayerNone().Type())
+            if (playerStates[index].Identification() == new PlayerNone().Identification())
                 playerStates[index] = value;
             else
                 throw new InvalidOperationException("State has already been set bro...");
@@ -77,7 +77,7 @@ namespace TicTacBro.Domain
             {
                 if (winCondition.IsMet(playerStates, lastPlayedState))
                 {
-                    if (lastPlayedState.Type() == new PlayerX().Type())
+                    if (lastPlayedState.Identification() == new PlayerX().Identification())
                         LogEvent(new PlayerXWonEvent());
                     else
                         LogEvent(new PlayerOWonEvent());
@@ -94,7 +94,7 @@ namespace TicTacBro.Domain
 
         private Boolean OnlyTwoEmptySpacesRemain()
         {
-            return playerStates.Where(s => s.Type() == new PlayerNone().Type()).Count() == 2;
+            return playerStates.Where(s => s.Identification() == new PlayerNone().Identification()).Count() == 2;
         }
 
         private Boolean OnlyOneWinConditionRemains()

@@ -4,6 +4,6 @@ namespace TicTacBro.Domain
 {
     public interface IPlayer
     {
-        Char Type();
+        Char Identification();
     }
 }

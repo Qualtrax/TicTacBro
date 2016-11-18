@@ -2,7 +2,7 @@
 {
     public class PlayerO : IPlayer
     {
-        public char Type()
+        public char Identification()
         {
             return 'O';
         }

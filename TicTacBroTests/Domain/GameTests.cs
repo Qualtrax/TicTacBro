@@ -32,7 +32,7 @@ namespace TicTacBroTests.Domain
             
             var @event = game.Events.First() as MoveEvent;
             Assert.AreEqual(position, @event.Position);
-            Assert.AreEqual(player.Type(), @event.Player.Type());
+            Assert.AreEqual(player.Identification(), @event.Player.Identification());
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace TicTacBroTests.Domain
 
             var @event = game.Events.First() as MoveEvent;
             Assert.AreEqual(position, @event.Position);
-            Assert.AreEqual(player.Type(), @event.Player.Type());
+            Assert.AreEqual(player.Identification(), @event.Player.Identification());
         }
 
         [TestMethod]
@@ -60,8 +60,8 @@ namespace TicTacBroTests.Domain
             var lastEvent = game.Events.Last() as MovedOutOfTurnEvent;
             Assert.AreEqual(2, game.Events.Count());
             Assert.AreEqual(2, firstEvent.Position);
-            Assert.AreEqual(playerX.Type(), firstEvent.Player.Type());
-            Assert.AreEqual(playerX.Type(), lastEvent.Player.Type());
+            Assert.AreEqual(playerX.Identification(), firstEvent.Player.Identification());
+            Assert.AreEqual(playerX.Identification(), lastEvent.Player.Identification());
         }
 
         [TestMethod]

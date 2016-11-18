@@ -20,14 +20,14 @@ namespace TicTacBro.Domain.WinConditions
 
         public Boolean IsMet(IEnumerable<IPlayer> playerStates, IPlayer player)
         {
-            return condition.All(c => playerStates.ElementAt(c).Type() == player.Type());
+            return condition.All(c => playerStates.ElementAt(c).Identification() == player.Identification());
         }
 
         public Boolean CanBeMet(IEnumerable<IPlayer> playerStates)
         {
             return condition
-                .Where(c => playerStates.ElementAt(c).Type() != new PlayerNone().Type())
-                .GroupBy(c => playerStates.ElementAt(c).Type()).Count() <= 1;
+                .Where(c => playerStates.ElementAt(c).Identification() != new PlayerNone().Identification())
+                .GroupBy(c => playerStates.ElementAt(c).Identification()).Count() <= 1;
         }
     }
 }
