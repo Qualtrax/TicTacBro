@@ -4,6 +4,7 @@ using Microsoft.AspNet.SignalR;
 using TicTacBro.Domain;
 using TicTacBro.Domain.Events;
 using TicTacBro.Factories;
+using System.Collections.Generic;
 
 namespace TicTacBro.Hubs
 {
@@ -20,11 +21,9 @@ namespace TicTacBro.Hubs
 
             var emptyGame = new Char[9];
             var moveEvents = game.Events.Where(e => e is MoveEvent).Cast<MoveEvent>();
+            var movesList = moveEvents.Select(move => move.Position).ToList();
 
-            foreach (var moveEvent in moveEvents)
-                emptyGame[moveEvent.Position] = moveEvent.Player.Identification();
-
-            Clients.Client(Context.ConnectionId).InitializeBoard(emptyGame);
+            Clients.Client(Context.ConnectionId).InitializeBoard(movesList);
         }
 
         public void Start()
