@@ -11,13 +11,11 @@ namespace TicTacBro.Hubs
     public class TicTacHub : Hub
     {
         private static Game game;
-        private static PlayerTracker playerTracker;
-        private static IPlayer nextPlayer;
 
         public void Join()
         {
             if (game == null)
-                InitializeGame();
+                game = new Game();
 
             var emptyGame = new Char[9];
             var moveEvents = game.Events.Where(e => e is MoveEvent).Cast<MoveEvent>();
@@ -28,14 +26,14 @@ namespace TicTacBro.Hubs
 
         public void Start()
         {
-            InitializeGame();
+            game = new Game();
             Clients.All.InitializeBoard(new NewGameFactory().BuildEmptyGame());
         }
 
-        public void YourTurnBro(Int32 position)
+        public void YourTurnBro(Int32 position, Char player)
         {
+            var nextPlayer = PlayerFactory.CreatePlayer(player);
             game.MakeMove(nextPlayer, position);
-            nextPlayer = playerTracker.ChangePlayer();
 
             var lastMove = game.Events.Last(e => e is MoveEvent) as MoveEvent;
             var gameStatus = 0;
@@ -48,13 +46,6 @@ namespace TicTacBro.Hubs
                 gameStatus = 3;
 
             Clients.All.UpdateGameStatus(position, lastMove.Player.Identification(), gameStatus);
-        }
-
-        private void InitializeGame()
-        {
-            game = new Game();
-            nextPlayer = new PlayerX();
-            playerTracker = new PlayerTracker(nextPlayer);
         }
     }
 }

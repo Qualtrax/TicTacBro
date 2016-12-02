@@ -5,17 +5,14 @@ namespace TicTacBro.Factories
 {
     public static class PlayerFactory
     {
-        public const String X = "X";
-        public const String O = "O";
-
-        public static IPlayer Build(String player)
+        public static IPlayer CreatePlayer(Char player)
         {
-            if (String.Equals(player, X, StringComparison.InvariantCultureIgnoreCase))
+            if (player == new PlayerX().Identification())
                 return new PlayerX();
-            else if (String.Equals(player, O, StringComparison.InvariantCultureIgnoreCase))
+            if (player == new PlayerO().Identification())
                 return new PlayerO();
-            else
-                throw new InvalidOperationException();
+
+            return new PlayerNone();
         }
     }
 }

@@ -46,7 +46,6 @@
             var ticTacBro = $.connection.ticTacHub;
             var lastPlayerToMove;
             
-
             ticTacBro.client.updateGameStatus = function (index, lastPlayer, gameStatus) {
                 var square = document.getElementById(index);
                 square.classList.add('selected');

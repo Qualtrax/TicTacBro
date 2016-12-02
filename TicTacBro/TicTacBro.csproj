@@ -208,7 +208,7 @@
     <Compile Include="Domain\Events\PlayerOWonEvent.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\IAggregateRoot.cs" />
-    <Compile Include="Domain\PlayerTracker.cs" />
+    <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Domain\WinConditions\DiagonalTopRightWinCondition.cs" />
     <Compile Include="Domain\WinConditions\DiagonalTopLeftWinCondition.cs" />
     <Compile Include="Domain\WinConditions\ColumnThreeWinCondition.cs" />
@@ -221,7 +221,6 @@
     <Compile Include="Domain\WinConditions\WinCondition.cs" />
     <Compile Include="Exceptions\NedryException.cs" />
     <Compile Include="Factories\NewGameFactory.cs" />
-    <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
