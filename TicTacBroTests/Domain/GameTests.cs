@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TicTacBro.Domain;
 using TicTacBro.Domain.Events;
@@ -9,10 +10,14 @@ namespace TicTacBroTests.Domain
     public class GameTests
     {
         private Game game;
+        private IPlayer playerX;
+        private IPlayer playerO;
 
         public GameTests()
         {
             game = new Game();
+            playerX = new PlayerX();
+            playerO = new PlayerO();
         }
 
         [TestMethod]
@@ -25,34 +30,31 @@ namespace TicTacBroTests.Domain
         public void MoveEventIsLoggedWhenPlayerXMoveOccurs()
         {
             var position = 1;
-            var player = new PlayerX();
-            game.MakeMove(player, position);
+            game.MakeMove(playerX, position);
             
             Assert.AreEqual(1, game.Events.Count());
             
             var @event = game.Events.First() as MoveEvent;
             Assert.AreEqual(position, @event.Position);
-            Assert.AreEqual(player.Identification(), @event.Player.Identification());
+            Assert.AreEqual(playerX.Identification(), @event.Player.Identification());
         }
 
         [TestMethod]
         public void MoveEventIsLoggedWhenPlayerOMoveOccurs()
         {
             var position = 1;
-            var player = new PlayerO();
-            game.MakeMove(player, position);
+            game.MakeMove(playerO, position);
 
             Assert.AreEqual(1, game.Events.Count());
 
             var @event = game.Events.First() as MoveEvent;
             Assert.AreEqual(position, @event.Position);
-            Assert.AreEqual(player.Identification(), @event.Player.Identification());
+            Assert.AreEqual(playerO.Identification(), @event.Player.Identification());
         }
 
         [TestMethod]
         public void ErrorEventIsLoggedWhenPlayerMovesOutOfTurn()
         {
-            var playerX = new PlayerX();
             game.MakeMove(playerX, 2);
             game.MakeMove(playerX, 3);
 
@@ -67,9 +69,6 @@ namespace TicTacBroTests.Domain
         [TestMethod]
         public void EventIsLoggedWhenPlayerOWinsTheGame()
         {
-            var playerX = new PlayerX();
-            var playerO = new PlayerO();
-
             game.MakeMove(playerX, 0);
             game.MakeMove(playerO, 3);
             game.MakeMove(playerX, 1);
@@ -85,9 +84,6 @@ namespace TicTacBroTests.Domain
         [TestMethod]
         public void EventIsLoggedWhenPlayerXWinsTheGame()
         {
-            var playerX = new PlayerX();
-            var playerO = new PlayerO();
-
             game.MakeMove(playerX, 0);
             game.MakeMove(playerO, 3);
             game.MakeMove(playerX, 1);
@@ -102,9 +98,6 @@ namespace TicTacBroTests.Domain
         [TestMethod]
         public void EventIsLoggedWhenGameEndsInAnEarlyTie()
         {
-            var playerX = new PlayerX();
-            var playerO = new PlayerO();
-
             game.MakeMove(playerX, 0);
             game.MakeMove(playerO, 2);
             game.MakeMove(playerX, 1);
@@ -116,6 +109,28 @@ namespace TicTacBroTests.Domain
             var gameEndedInATieEvent = game.Events.Last();
             Assert.IsInstanceOfType(gameEndedInATieEvent, typeof(GameEndedInATieEvent));
             Assert.AreEqual(8, game.Events.Count());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ExceptionThrownWhenSelectedSpaceIsAlreadySelected()
+        {
+            game.MakeMove(playerX, 0);
+            game.MakeMove(playerO, 0);
+        }
+        
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void ExceptionThrownWhenPositionIsGreaterThanRange()
+        {
+            game.MakeMove(playerX, 9);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void ExceptionThrownWhenPositionIsLessThanRange()
+        {
+            game.MakeMove(playerX, -1);
         }
     }
 }

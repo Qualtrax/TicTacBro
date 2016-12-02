@@ -58,7 +58,10 @@ namespace TicTacBro.Domain
 
         private void ValidateIndexIsInRange(Int32 index)
         {
-            if (index > 8 || index < 0)
+            if (index > 8)
+                throw new ArgumentOutOfRangeException("Invalid Square State index bro...");
+
+            if (index < 0)
                 throw new ArgumentOutOfRangeException("Invalid Square State index bro...");
         }
 
@@ -82,7 +85,7 @@ namespace TicTacBro.Domain
 
             winConditions.RemoveAll(w => !w.CanBeMet(playerStates));
 
-            if (NoWinConditionsRemain() || (OnlyOneWinConditionRemains() && OnlyTwoEmptySpacesRemain()))
+            if (OnlyOneWinConditionRemains() && OnlyTwoEmptySpacesRemain())
                 LogEvent(new GameEndedInATieEvent());
         }
 
@@ -94,11 +97,6 @@ namespace TicTacBro.Domain
         private Boolean OnlyOneWinConditionRemains()
         {
             return winConditions.Count() == 1;
-        }
-
-        private Boolean NoWinConditionsRemain()
-        {
-            return !winConditions.Any();
         }
     }
 }
