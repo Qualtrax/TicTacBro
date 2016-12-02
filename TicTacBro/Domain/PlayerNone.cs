@@ -1,10 +1,14 @@
-﻿namespace TicTacBro.Domain
+﻿using System;
+
+namespace TicTacBro.Domain
 {
     public class PlayerNone : IPlayer
     {
-        public char Identification()
+        private Char identifier = 'N';
+
+        public Char Identification()
         {
-            return 'N';
+            return identifier;
         }
     }
 }

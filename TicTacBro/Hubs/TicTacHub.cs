@@ -5,12 +5,32 @@ using TicTacBro.Domain;
 using TicTacBro.Domain.Events;
 using TicTacBro.Factories;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TicTacBro.Hubs
 {
     public class TicTacHub : Hub
     {
+        private readonly static Dictionary<String, IPlayer> connections = new Dictionary<String, IPlayer>();
         private static Game game;
+
+        public override Task OnConnected()
+        {
+            if (connections.Count(c => c.Value.Identification() == new PlayerX().Identification()) == 0)
+                connections.Add(Context.ConnectionId, new PlayerX());
+            else if (connections.Count(c => c.Value.Identification() == new PlayerO().Identification()) == 0)
+                connections.Add(Context.ConnectionId, new PlayerO());
+            else
+                connections.Add(Context.ConnectionId, new PlayerNone());
+
+            return base.OnConnected();
+        }
+
+        public override Task OnDisconnected(Boolean stopCalled)
+        {
+            connections.Remove(Context.ConnectionId);
+            return base.OnDisconnected(stopCalled);
+        }
 
         public void Join()
         {
@@ -30,10 +50,10 @@ namespace TicTacBro.Hubs
             Clients.All.InitializeBoard(new NewGameFactory().BuildEmptyGame());
         }
 
-        public void YourTurnBro(Int32 position, Char player)
+        public void YourTurnBro(Int32 position)
         {
-            var nextPlayer = PlayerFactory.CreatePlayer(player);
-            game.MakeMove(nextPlayer, position);
+            var player = connections[Context.ConnectionId];
+            game.MakeMove(player, position);
 
             var lastMove = game.Events.Last(e => e is MoveEvent) as MoveEvent;
             var gameStatus = 0;
