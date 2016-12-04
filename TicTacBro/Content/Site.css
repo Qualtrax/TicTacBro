@@ -1,8 +1,16 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Luckiest+Guy');
 
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
 body {
+    height: 100%;
     padding-top: 50px;
-    padding-bottom: 20px;
+    width: 100%;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -129,6 +137,22 @@ h5 {
 .row {
     display: flex;
     flex-direction: row;
+}
+
+#game-percentage-bar {
+    background-color: cornflowerblue;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+    position: fixed;
+}
+
+#red-percentage {
+    background-color: indianred;
+    display: inline-block;
+    float: left;
+    height: 100%;
+    width: 33%;
 }
 
 @media (min-width: 450px) {
