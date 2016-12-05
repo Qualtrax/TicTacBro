@@ -148,11 +148,24 @@ h5 {
 }
 
 #red-percentage {
+    animation: slide 0.5s forwards;
+    animation-delay: 2s;
     background-color: indianred;
     display: inline-block;
-    float: left;
     height: 100%;
+    left: -100px;
+    position: absolute;
     width: 33%;
+    -webkit-animation: slide 0.5s forwards;
+    -webkit-animation-delay: 2s;
+}
+
+@-webkit-keyframes red-percentage {
+    100% { left: 0; }
+}
+
+@keyframes red-percentage {
+    100% { left: 0; }
 }
 
 @media (min-width: 450px) {
